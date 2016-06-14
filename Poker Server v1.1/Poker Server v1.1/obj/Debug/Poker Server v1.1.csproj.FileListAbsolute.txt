@@ -1,0 +1,15 @@
+F:\Projects\Important\Poker Server v1.1\Poker Server v1.1\bin\Debug\Poker Server v1.1.exe.config
+F:\Projects\Important\Poker Server v1.1\Poker Server v1.1\bin\Debug\Poker Server v1.1.exe
+F:\Projects\Important\Poker Server v1.1\Poker Server v1.1\bin\Debug\Poker Server v1.1.pdb
+F:\Projects\Important\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker Server v1.1.csprojResolveAssemblyReference.cache
+F:\Projects\Important\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker_Server_v1._1.mainForm.resources
+F:\Projects\Important\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker_Server_v1._1.Properties.Resources.resources
+F:\Projects\Important\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker Server v1.1.csproj.GenerateResource.Cache
+F:\Projects\Important\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker Server v1.1.exe
+F:\Projects\Important\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker Server v1.1.pdb
+C:\Users\ASUS\Desktop\Projects\Important\Poker Server v1.1\Poker Server v1.1\bin\Debug\Poker Server v1.1.exe.config
+C:\Users\ASUS\Desktop\Projects\Important\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker Server v1.1.exe
+C:\Users\ASUS\Desktop\Projects\Important\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker Server v1.1.pdb
+D:\projects\Important\Poker Server v1.1\Poker Server v1.1\bin\Debug\Poker Server v1.1.exe.config
+D:\projects\Important\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker Server v1.1.exe
+D:\projects\Important\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker Server v1.1.pdb

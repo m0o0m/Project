@@ -1,0 +1,191 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+body {
+    position: absolute;
+    top: 0px;
+}
+header {
+    position: absolute;
+    top: 0px;
+    background-color: black;
+    width:  100%;
+    height: 5%;
+}
+footer{
+    height : 5%;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    background-color: black;
+}
+#main-container{
+    position: absolute;
+    background-color: azure;
+    width: 100%;
+    height: 90%;
+    top : 5%;
+}
+#main-container #container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url("images/bg.png");
+    background-repeat: repeat;
+}
+#main-container #container #lobby-container #sidebar {
+    position: absolute;
+    height: 90%;
+    width: 20%;
+    right: 1%;
+    top : 5%;
+}
+#main-container #container #lobby-container #lobby-viewer{
+    position: absolute;
+    background-color: black;
+    height : 90%;
+    width : 75%;
+    top : 5%;
+    left: 2%;
+    border-radius: 5px;
+}
+.sidebar-btn{
+    position: relative;
+    width: 90%;
+    margin-top: 8%;
+    height: 16%;
+    left: 5%;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 2px 3px 15px black;
+    color: azure;
+    text-align: center;
+    font-family: fantasy;
+    box-shadow: -1px 1px 40px black;
+}
+.sidebar-btn:hover
+{
+    opacity: 0.97;
+}
+.sidebar-btn a
+{
+    position: absolute;
+    top: 24%;
+    left: 0;
+    width: 100%;
+}
+#profile-btn
+{
+    background-color: #55ff00;
+}
+#cashgames-btn
+{
+    background-color: #fc2b6a;
+}
+#tournoments-btn
+{
+    background-color: #4cc4ff;
+}
+#sitsandgoes-btn
+{
+    background-color: #ffff00;
+}
+#rollet-btn
+{
+    background-color: #b332fd;
+}
+
+.viewer-part{
+    position: absolute;
+    height: 99%;
+    width: 99%;
+    top : 0.5%;
+    left: 0.5%;
+    background-color: #000000;
+    color : white;
+}
+#infobox-container{
+    position: absolute;
+    height: 90%;
+    width: 100%;
+    overflow-y: scroll;
+}
+.cashtable-infobox{
+    width: 100%;
+    height: 5%;
+    border-bottom: 1px solid white;
+    background-color: black;
+    color : white;
+    cursor: pointer;
+}
+.cashtable-infobox:hover
+{
+    background-color: white;
+    color : black;
+}
+.infobox-details{
+    position: relative;
+    height: 30%;
+    width: 100%;
+    display: none;
+    background-color: gold;
+}
+#infobox-container-header{
+    height : 5%;
+    width: 100%;
+    background-color: black;
+    border-bottom: 5px solid gold;
+    overflow: hidden;
+}
+#infobox-container-header a
+{
+    width: 24.3%;
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    margin-top: 0.5%;
+}
+.tablehandle-info
+{
+    position: relative;
+    height: 100%;
+    width: 20%;
+    display: inline-block;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    margin-top: 0.5%;
+    text-align: center;
+    overflow: hidden;
+}
+.Button
+{
+    cursor: pointer;
+    position: absolute;
+    background-color: silver;
+    border-radius : 6px;
+    height : 33%;
+    width : 15%;
+    right: 5%;
+    top: 5%;
+}
+.Button:hover{
+    opacity: 0.8;
+}
+.Button a
+{
+    position: absolute;
+    width: 100%;
+    height: 10%;
+    background-color: green;
+}
+#loader
+{
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    color: white;
+    position: absolute;
+    z-index: 100;
+    text-align: center;
+}
