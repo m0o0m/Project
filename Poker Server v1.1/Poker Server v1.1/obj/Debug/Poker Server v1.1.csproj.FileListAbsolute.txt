@@ -13,3 +13,6 @@ C:\Users\ASUS\Desktop\Projects\Important\Poker Server v1.1\Poker Server v1.1\obj
 D:\projects\Important\Poker Server v1.1\Poker Server v1.1\bin\Debug\Poker Server v1.1.exe.config
 D:\projects\Important\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker Server v1.1.exe
 D:\projects\Important\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker Server v1.1.pdb
+D:\Github\Project\Poker Server v1.1\Poker Server v1.1\bin\Debug\Poker Server v1.1.exe.config
+D:\Github\Project\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker Server v1.1.exe
+D:\Github\Project\Poker Server v1.1\Poker Server v1.1\obj\Debug\Poker Server v1.1.pdb
