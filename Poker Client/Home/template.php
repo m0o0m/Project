@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
     <title>Online Poker - Golden Flop </title>
-    <link href="Home/styles/style.css" rel="stylesheet">
+    <link href="Home/styles/styleDesktop.css" rel="stylesheet">
     <link href="Home/styles/animate.css" rel="stylesheet">
     <script src="home/scripts/jquery-1.12.2.min.js"></script>
     <script src="home/scripts/loader.js"></script>
@@ -43,6 +43,7 @@
                 <div id="back-shadow"></div>
             </div>
         </header>
+        <div id="circles-container">
         <div id="circles">
             <div class="circle" id="home-btn"><a>HOME</a></div>
             <div class="circle" id="news-btn"><a>NEWS</a></div>
@@ -50,10 +51,22 @@
             <div class="circle" id="about-btn"><a>ABOUT</a></div>
             <div class="circle" id="support-btn"><a>SUPPORT</a></div>
         </div>
+        </div>
         <div id="home">
+          <div id="viewer" >
+            <div id="viewer-box-back"></div>
+            <div class="viewer-box" id="viewer-box1">
+              <?php
+                include_once "include/login.php";
+               ?>
+            </div>
+          </div>
         </div>
 
     </div>
 </div>
 <footer></footer>
 </body>
+<script>
+  $(".circle").on
+</script>

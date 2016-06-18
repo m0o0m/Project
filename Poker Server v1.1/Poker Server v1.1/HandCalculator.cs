@@ -83,28 +83,28 @@ namespace Poker_Server_v1._1
             #region Is Flash Royal
             //we brute force all possible situation 
             //for a royal flash
-            checker = 31744;//1111100000..
+            checker = 31744;//1111100000...
             for (i = 0; i < 10; i--)
             {
                 for (j = 0; j < 4; j++)
                 {
                     if ((checker & flager[j]) == checker)
                     {
-                        //yess we have royal flash
+                        //yes we have royal flash
                         l = 14 - i;
                         for (k = 0; k < 5; k++)
                         {
                             if (l == 14)
                             {
-                                hand.cards[i] = l * (j + 1);
+                                hand.cards[i] = l * (j + 1);//j + 1 is card type ( 1 - 4)
                             }
                         }
                         hand.handRate = handRates.RoyalFlush;
-                        return hand;
+                        return hand; //end if we have royal flash
                     }
                 }
-                checker <<= 1 ;
-                hand.free();
+                checker <<= 1 ;// check next royal flush
+                hand.free();//free the hand
             }
             #endregion
 
@@ -112,67 +112,84 @@ namespace Poker_Server_v1._1
             checker = 16384;//1 << 14 ->            0100000000000000
             for (i =0; (checker >>= 1) != 0; i++)//first be 0010000000000000 
             {
-                //this while loop do this works 14 time
+                //this while loop do this works 14 time if not find a fourofkind
                 // one time for two section
+
+                //check that flager on all cards type is true
                 if (   ((checker & flager[1]) == checker) 
                     && ((checker & flager[2]) == checker)
                     && ((checker & flager[3]) == checker)
                     && ((checker & flager[4]) == checker))
                 {
                     //is a four of kind
-                    l = 14 - i;
-                    if (l == 14) l = 1;
+                    //now we should create a hand
+
+                    l = 14 - i;//i is offset from 14th flag... i (0 - 13)
+                    if (l == 14) l = 1;// 14 is ace
+                    //l is number of card
+
                     for (i = 0; i < 4; i++)
-                        hand.cards[i] = l * (i + 1);
+                        hand.cards[i] = l * (i + 1);// i is card type
+                    //now we choosed 4 cards so next we should choose fifth card that it is
+                    //maximum card and it is not the value of ' l variable '
+
                     //now find a maximum card for fifth card
-                    checker1 = 16384;
-                    for ( k = 0 ; (checker1 <<= 1) != 1; k++)
+                    checker1 = 16384;//from 14th card we check to 2th card
+                    for ( i = 0 ; (checker1 <<= 1) != 1; i++)
                     {
                         for (j = 0; j < 4; j++)
-                            if ((checker1 & flager[j]) == checker1 && checker1 != checker )
+                            if ((checker1 & flager[j]) == checker1 && checker1 != checker)
                             {
-                                l = 14 - k;
-                                hand.cards[4] = (l * (j + 1));
+                                k = 14 - i;//i is offset and k is card number
+                                if (k == 14) l = 1; //14 is ace
+
+                                if (k != l)//k != fourofkind's card number
+                                {
+                                    hand.cards[4] = l * (j + 1);//j + 1 is card type ( 1 - 4)
+                                    hand.handRate = handRates.FourOfKind;
+                                    return hand;
+                                }
                             }
                     }
-
-                    hand.handRate = handRates.FourOfKind;
-                    return hand;
                 }
             }
             #endregion
 
             #region Is FullHouse
-            checker1 = 16384;// 1 << 14
-            for(k = 0; ((checker1 <<= 1) != 1 ); k++)
+            checker1 = 16384;// 1 << 14    010000000...
+            for(k = 0; ((checker1 >>= 1) != 1 ); k++)// k is offset
             {
                 //count of checker
                 int fullhouseCounter = 0;
                 for (i = 0; i < 4; i++)
                     if ((checker1 & flager[i]) == checker1)
                     {
-                        l = 14 - k;
+                        l = 14 - k; // k is offset
                         hand.cards[fullhouseCounter] = l * (i + 1) ;
                         fullhouseCounter++;
                     }
-                if(fullhouseCounter >= 3)
+                if(fullhouseCounter == 3)
                 {
-                    //the first three cards are checker1
-                    checker2 = 16384;
-                    for (k = 0; (checker2 <<= 1) != 1 ; k++)
+                    //the first three cards are checker1 and value has been set to l
+                    //now we should find a pair
+                    checker2 = 16384;// 1 << 14 
+                    for (k = 0; (checker2 >>= 1) != 1 ; k++)//k is offset
                     {
-                        fullhouseCounter = 0;
-                        for (i = 0; i < 4; i++)
-                            if ((checker2 & flager[2]) == checker2)
+                        fullhouseCounter = 0;//set counter to zero
+
+                        for (i = 0; i < 4; i++) // i + 1 is card type 
+                            if ((checker2 & flager[i]) == checker2)
                             {
-                                l = 14 - k;
-                                hand.cards[fullhouseCounter] = l * (i + 1);
+                                l = 14 - k;//k is offset
+                                //l is card number
+                                hand.cards[fullhouseCounter] = l * (i + 1); // i + 1 is card type
                                 fullhouseCounter++;
                             }
                         if (fullhouseCounter >= 2)
                         {
                             //it is the two cards that we need
                             //and we have a full house here
+                            //we have five card in the hand.card not more we need
                             hand.handRate = handRates.FullHouse;
                             return hand;
                         }
@@ -189,17 +206,22 @@ namespace Poker_Server_v1._1
                 flashCounter = 0;
                 hand.free();
                 checker = 16384;
-                while ((checker <<= 1) != 1)
+                for ( j = 0; (checker <<= 1) != 1; j++) // i is offset
                 {
                     if ((checker & flager[i]) == checker)
                   {
-                        hand.cards[flashCounter] = 0; // here think and complete l4t3r
+                        l = 14 - i;
+                        if (l == 14) l = 1; //14 is ace
+                        //j is offset
+                        //l is card number
+                        hand.cards[flashCounter] = l * ( i + 1); // i is card type
                         flashCounter++;
-                        if (flashCounter >= 5)
+                        if (flashCounter == 5)
                         {
                             //here we have a flash 
                             //and it is the best flash hand
-                            break;
+                            hand.handRate = handRates.Flush;
+                            return hand;
                         }
                     }
                 }
@@ -209,22 +231,28 @@ namespace Poker_Server_v1._1
             #region Is Straight
             checker = 16384;
             int straightCounter = 0;
-            while ((checker <<= 1) != 0)
+            for (k = 0; (checker <<= 1) != 0; k++)//k is offset
             {
-                for (i = 0; i < 4; i++)
+                for (i = 0; i < 4; i++)//i + 1 is card type
                 {
                     if ((checker & flager[i]) == checker)
                     {
-                        straightCounter++;
+                        l = 14 - k;//k is offset and l is car number
+                        if (l == 14) l = 1;//14 is ace
+                        hand.cards[straightCounter++] = l * (i + 1); // i + 1 is card type
                         break;
                     }
                     if (straightCounter == 5)
                     {
                         //here we have an straight
+                        hand.handRate = handRates.Straight;
+                        return hand;
                     }
                     if (i == 3)
                     {
+                        //here the str8 is cutted 
                         //free last 
+                        hand.free();
                         straightCounter = 0;
                         break;
                     }
@@ -233,32 +261,38 @@ namespace Poker_Server_v1._1
             #endregion
 
             #region Is three of kind
-            checker1 = 16384;
+            checker1 = 16384;// 1 <<= 14 010000..
             int threeCounter;
-            while ((checker1 <<= 1) != 0)
+            for (j = 0; (checker1 >>= 1) != 0; j++)//j is offset
             {
                 threeCounter = 0;
-                for (i = 0; i < 4; i++)
+                for (i = 0; i < 4; i++)//for each card type
                 {
-                    if ((flager[i] & checker1) != 0)
+                    if ( (flager[i] & checker1) != 0)
                     {
-                        threeCounter++;
-                        if (threeCounter >= 3)
+                        l = 14 - i;
+                        if (l == 14) l = 1; // 14 is ace
+                        hand.cards[threeCounter++] = l * (i + 1);// i + 1 is card type
+                        if (threeCounter == 3)
                         {
                             //here we have three of kind
+                            hand.handRate = handRates.ThreeOfKind;
 
                             //now we should find two max
                             counter = 0;
-                            checker2 = 16384;
-                            while ((checker2 <<= 1) != 1)
+                            checker2 = 16384; // 1 <<= 14 01000...
+                            for (j = 0; (checker2 >>= 1) != 1; j++)//j is offset
                             {
-                                for (i = 0; i < 4; i++)
-                                    if ((checker2 & flager[i]) != checker2)
+                                for (i = 0; i < 4; i++)//i is card type
+                                    if ((checker2 & flager[i]) != 0)
                                     {
-                                        counter++;
+                                        l = 14 - j;
+                                        if (l == 14) l = 1; // 14 is ace
+                                        hand.cards[counter++] = l * (i + 1);//i + 1 is card type and l is card number
+                                        if (counter == 2)
+                                            return hand;//end
                                     }
-                                if (counter >= 2)//end
-                                    break;
+                                return hand;//end
                             }
                         }
                     }
@@ -267,35 +301,55 @@ namespace Poker_Server_v1._1
             #endregion
 
             #region is Two pair
-            checker = 16384;//10000...
+            checker = 16384;// 1 <<= 14 010000...
             int counter2 = 0;
-            while ((checker <<= 1) != 1)
+            for (j = 0; (checker >>= 1) != 1; j++)// j  is offset
             {
                 counter = 0;
-                for (i = 0; i < 4; i++)
+                for (i = 0; i < 4; i++)//i + 1 is card type
                 {
                     if ((checker & flager[i]) == checker)
                     {
+                        l = 14 - j;//j is offset
+                        if (l == 14)//14 is ace
+                            l = 1;
+
+                        if (counter2 == 0)
+                            hand.cards[counter] = l * (i + 1);//i + 1 is card type
+                        else if (counter2 == 1)
+                            hand.cards[counter + 2] = l * (i + 1);
                         counter++;
-                    }
-                }
-                if (counter == 2)
-                {
-                    counter2++;
-                    if (counter2 == 2)//here we have a two pair
-                    {
-                        //finding maximums
-                        counter = 0;
-                        checker2 = 16384;
-                        while ((checker2 <<= 1) != 1)
+
+                        if (counter == 2)
                         {
-                            for (i = 0; i < 4; i++)
-                                if ((checker2 & flager[i]) != checker2)
+                            counter2++;
+                            if (counter2 == 2)//here we have a two pair
+                            {
+                                hand.handRate = handRates.TwoPair;
+                                //finding maximum card
+                                checker2 = 16384;
+                                for (j = 0; (checker2 <<= 1) != 1; j++)//j is offset
                                 {
-                                    counter++;
+                                    for (i = 0; i < 4; i++)//i + 1 is card type
+                                        if ((checker2 & flager[i]) != checker2)
+                                        {
+                                            l = (14 - j);
+                                            if (l == 14)//14 is ace
+                                                l = 1;
+
+                                            bool exist = false;
+                                            for (k = 0; k < 4; k++)
+                                                if (hand.cards[k] == (l * (i + 1)))
+                                                    exist = true;
+                                            if (!exist)
+                                            {
+                                                hand.cards[4] = l * (i + 1);//it is max card
+                                                return hand;
+                                            }
+                                        }
                                 }
-                            if (counter >= 3)//end
-                                break;
+                                return hand;
+                            }
                         }
                     }
                 }
@@ -303,30 +357,78 @@ namespace Poker_Server_v1._1
             #endregion
 
             #region is one pair
+            checker = 16384;//1 << 14 0100..
+            for (j = 0; (checker <<= 1) != 1; j++)
+            {
+                counter = 0;
+                for (i = 0; i < 4; i++)
+                {
+                    if ((checker & flager[i]) == checker)//it exist
+                    {
+                        l = 14 - j;
+                        if (l == 14)
+                            l = 1;
+                        hand.cards[counter] = l * (i + 1);
+                        counter++;
+                        if (counter == 2)
+                        {
+                            hand.handRate = handRates.Pair;
+                            //now we should find three maximum card
+                            checker = 16384;
+                            for (j = 0; (checker <<= 1) != 1; j++)//j is offset
+                            {
+                                for (i = 0; i < 4; i++)
+                                {
+                                    if ((checker & flager[i]) == checker)
+                                    {
+                                        l = 14 - j;
+                                        if (l == 14) l = 1;
+
+                                        bool exist = false;
+                                        for (k = 0; k < 2; k++)
+                                            if (l * (i + 1) == hand.cards[k])
+                                            {
+                                                exist = true;
+                                                break;
+                                            }
+                                        if (!exist)
+                                            hand.cards[counter++] = l * (i + 1);
+                                        if (counter == 4)
+                                            return hand;
+                                    }
+                                }
+                            }
+                            return hand;
+                        }
+                    } 
+                }
+            }
             #endregion
 
             #region choose maximum cards
-            checker = 16384;//1000...
+            checker = 16384;// 1 <<= 14; 01000...
             counter = 0;
-            while ((checker <<= 1) != 1)
+            hand.handRate = handRates.HighCard;
+            for( j = 0; (checker <<= 1) != 1; j++)//j is offset
             {
                 for(i = 0; i < 4; i++)
                 {
                     if ((checker & flager[i]) == checker)
                     {
-                        //we should save it here
-                        counter++;
+                        l = 14 - j;
+                        if (l == 14) l = 1;
+                        hand.cards[counter++] = l * (i + 1);                                                 
                         break;
                     }
                 }
                 if (counter >= 5)
-                    break;
+                    return hand;
             }
             #endregion
-            
+
             #endregion
-              
-            return null;
+
+            return hand;
         }
         public static Hand CalculateOmaha(int[] flopCards,int[] playerCards) 
         {

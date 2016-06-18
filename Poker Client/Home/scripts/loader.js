@@ -80,6 +80,7 @@ function loadAbout()
     $(".circle").removeClass("enable-btn");
     $("#about-btn").addClass("enable-btn");
 }
+
 $(document).ready(function(){
     playLoader();
     setTimeout(function(){
@@ -87,4 +88,15 @@ $(document).ready(function(){
         hideLoader();
     },1);
     installCirclesEvents();
+    fixer();
+    window.addEventListener("resize",function(){fixer();});
 });
+
+function fixer()
+{
+  $(".circle a").css("font-size", $(".circle").width()/5 + "px");
+  $("#login-btn a").css("font-size", $("#login-btn").width()/5 + "px");
+  $("#register-btn a").css("font-size", $("#register-btn").width()/10 + "px");
+  $("#viewer-box-back").css("top",$(".viewer-box").offsetTop + "px");
+  $("#viewer-box-back").css("left",$(".viewer-box").offset().left + "px");
+}
