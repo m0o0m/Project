@@ -464,9 +464,46 @@ namespace Poker_Server_v1._1
                 return CardType.Diamond;
             return CardType.FalseCard;
         }
+
+        /// <summary>
+        /// compare two hand to each other
+        /// </summary>
+        /// <returns>
+        ///      0 if they are equal
+        ///      1 if the first one is better
+        ///      2 if the second one is better
+        ///     -1 if error accured
+        /// </returns>
         public static int cmpHands(Hand hand1,Hand hand2)
         {
-            return 0;
+            if ((int)hand1.handRate > (int)hand2.handRate)
+                return 1;
+            if ((int)hand1.handRate < (int)hand2.handRate)
+                return 2;
+            //the hand rate is equal
+            //we should check each hand
+            switch (hand1.handRate)
+            {
+                case handRates.HighCard:
+                    break;
+                case handRates.Pair:
+                    break;
+                case handRates.TwoPair:
+                    break;
+                case handRates.ThreeOfKind:
+                    break;
+                case handRates.Straight:
+                    break;
+                case handRates.Flush:
+                    break;
+                case handRates.FullHouse:
+                    break;
+                case handRates.FourOfKind:
+                    break;
+                case handRates.RoyalFlush:
+                    break;
+            }
+            return -1;
         }
     }
     class Hand
