@@ -64,39 +64,43 @@ function installCirclesEvents()
     });
     $(".circle").click(function(){
         showLoader();
-        var t = this;
-        setTimeout(function(){
-            hideLoader();
-        },1500);
+        console.log(this.id.replace("-btn","").trim());
+        loadContent(this.id.replace("-btn","").trim());
     });
 }
-function loadHome()
-{
-    $(".circle").removeClass("enable-btn");
-    $("#home-btn").addClass("enable-btn");
-}
-function loadAbout()
-{
-    $(".circle").removeClass("enable-btn");
-    $("#about-btn").addClass("enable-btn");
-}
-
-$(document).ready(function(){
-    playLoader();
-    setTimeout(function(){
-        loadHome();
-        hideLoader();
-    },1);
-    installCirclesEvents();
-    fixer();
-    window.addEventListener("resize",function(){fixer();});
-});
-
 function fixer()
 {
   $(".circle a").css("font-size", $(".circle").width()/5 + "px");
   $("#login-btn a").css("font-size", $("#login-btn").width()/5 + "px");
-  $("#register-btn a").css("font-size", $("#register-btn").width()/10 + "px");
+  $("#register-top-btn a").css("font-size", $("#register-top-btn").width()/10 + "px");
   $("#viewer-box-back").css("top",$(".viewer-box").offsetTop + "px");
   $("#viewer-box-back").css("left",$(".viewer-box").offset().left + "px");
 }
+
+function loadContent(name)
+{
+  setTimeout(function(){
+    contentContainer = document.getElementById("content");
+    if(contentContainer != null){
+      $.post("/home/content.php",
+      {
+        page : name,
+        cache: false
+      },
+      function(data,status){
+        contentContainer.innerHTML = data;
+        setTimeout(function(){
+        installCirclesEvents();
+        $(".circle").css("box-shadow","1px 1px 50px 15px black")
+        $("#"+name+"-btn").css("box-shadow","1px 1px 50px 15px yellow");
+        fixer();
+        hideLoader();},1000);
+      });
+    }
+  },1000);
+}
+
+$(document).ready(function(){
+    playLoader();
+    window.addEventListener("resize",function(){fixer();});
+});

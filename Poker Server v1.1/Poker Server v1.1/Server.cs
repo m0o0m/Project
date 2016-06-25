@@ -13,8 +13,6 @@ namespace Poker_Server_v1._1
     class Server
     {
         public ServerStatus State;
-
-        public List<Thread> ClientsThreads;
         
         private string ipaddress;
         private short Port;
@@ -152,9 +150,10 @@ namespace Poker_Server_v1._1
         }
         public Server()
         {
-            State = ServerStatus.Stoped;
             GameCore = new Core();
             Globals.GameCore = GameCore;
+            Globals.serverStatus = State;
+            State = ServerStatus.Stoped;
         }
         public bool Start(string ipaddress, short Port)
         {
@@ -166,10 +165,10 @@ namespace Poker_Server_v1._1
                     this.ipaddress = ipaddress;
                     this.Port = Port;
 
+                    GameCore.Start();
+
                     serverTcpListener = new TcpListener(IPAddress.Parse(this.ipaddress), Port);
                     serverTcpListener.Start();
-                    
-                    GameCore.Start();
 
                     listenerThread = new Thread(new ThreadStart(acceptingClients));
                     listenerThread.Start();//CALL acceptingClients
@@ -189,9 +188,9 @@ namespace Poker_Server_v1._1
                 {
                     Globals.addLog("invalid ip address!", Color.Red);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    Globals.addLog("Can not start server an error accured!", Color.Red);
+                    Globals.addLog("Can not start server an error accured! ("+e.Message+")", Color.Red);
                 }
             }
             else

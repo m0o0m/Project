@@ -15,7 +15,7 @@
     background-image: url("images/pattrn-blue.jpg");
     text-align: center;
     position: relative;
-    
+
 }
 .tableHeader:hover
 {
@@ -221,7 +221,6 @@
     position: absolute;
     right: 0;
 }
-
 .card
 {
     width: 45%;
@@ -238,7 +237,6 @@
 {
     right: 0;
 }
-
 .control-box
 {
     background-color: green;
@@ -284,11 +282,3 @@
     -webkit-transition: top 2s, left 2s, -webkit-transform 2s; /* Safari */
     transition: left 2s, top 2s, transform 2s;
 }
-
-
-
-
-
-
-
-

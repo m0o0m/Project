@@ -15,8 +15,8 @@ namespace Poker_Server_v1._1
 
         public int dealerPos = 0;
 
-        public int pot;
-        public int toCall;
+        public float pot;
+        public float toCall;
 
         public int[] Cards;
         public int NextCardIndex = 0;

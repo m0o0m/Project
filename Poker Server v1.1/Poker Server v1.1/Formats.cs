@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 namespace Poker_Server_v1._1
 {
-    class Formats
-    {
-    }
 
     class ClientHeaderData
     {

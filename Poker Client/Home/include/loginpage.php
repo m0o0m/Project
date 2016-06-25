@@ -1,7 +1,7 @@
 <div id="login">
   <div id="box-login">
     <div id="login-head"><a><strong>LOG-IN</strong></a></div>
-    <form  id="main-form-login" method="post" action="">
+    <form  id="main-form-login" method="post" action="login.php">
       <div  id="login-input-username">
         <input type="text" name="username" placeholder="Enter username here">
       </div>
@@ -21,6 +21,10 @@
   </div>
 </div>
 <style>
+#viewer-box-back
+{
+  opacity: 0 !important;
+}
 #login
 {
   width: 40%;
@@ -52,7 +56,6 @@
   top: 50%;
   transform: translateX(-50%);
 }
-
 #login-input-submit, #login-input-username, #login-input-password, #login-input-captcha
 {
   position: relative;

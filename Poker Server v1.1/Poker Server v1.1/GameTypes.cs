@@ -8,7 +8,7 @@ namespace Poker_Server_v1._1
 {
     class NoLimitHoldem : Table
     {
-        public NoLimitHoldem(string TableID, string TableName, int SeatsCount, int MinBuyin, int MaxBuyin, int BigBlind)
+        public NoLimitHoldem(string TableID, string TableName, int SeatsCount, float MinBuyin, float MaxBuyin, float BigBlind)
         {
             this.tableName = TableName;
             this.tableId = TableID;
@@ -35,7 +35,7 @@ namespace Poker_Server_v1._1
                         playerData[i].haveMove = true;
                         playerData[i].Cards[0] = tableData.Cards[tableData.NextCardIndex++];
                         playerData[i].Cards[1] = tableData.Cards[tableData.NextCardIndex++];
-                        Client c = playerData[i].updateClient(playerData[i].client);
+                        Client c = playerData[i].updateClient();
                         c.send(
                             new string[] { "type", "dataType", "c1", "c2", "tableId" },
                             new string[] { "tableData", "ucard", playerData[i].Cards[0].ToString(), playerData[i].Cards[1].ToString(), this.tableId }
@@ -82,11 +82,10 @@ namespace Poker_Server_v1._1
         }
         public void processWinner()
         {
-
         }
         public void act()
         {
-            while (Server.isRunning())
+            while (Globals.serverStatus == ServerStatus.Running)
             {
                 Thread.Sleep(100);
 
@@ -139,3 +138,4 @@ namespace Poker_Server_v1._1
     {
     }
 }
+

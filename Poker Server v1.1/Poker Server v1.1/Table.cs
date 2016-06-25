@@ -29,9 +29,9 @@ namespace Poker_Server_v1._1
         public string tableName { get; protected set; }
         public string tableId { get; protected set; }
         public int seatsCount { get; protected set; }
-        public int maxBuyin { get; protected set; }
-        public int minBuyin { get; protected set; }
-        public int bigBlind { get; protected set; }
+        public float maxBuyin { get; protected set; }
+        public float minBuyin { get; protected set; }
+        public float bigBlind { get; protected set; }
 
         public void nextTurn()
         {
@@ -324,7 +324,7 @@ namespace Poker_Server_v1._1
         {
             //checking process should be later in gamecore
             playerData[pos].Chips -= tableData.toCall;
-            Client c = playerData[pos].updateClient(playerData[pos].client);
+            Client c = playerData[pos].updateClient();
             c.decBalance(tableData.toCall);
             tableData.pot += tableData.toCall;
             playerData[pos].haveMove = false; // but player is in game

@@ -13,7 +13,7 @@ namespace Poker_Server_v1._1
         public string Username;
         private string Session;
 
-        public Thread ClientThread;   
+        public Thread ClientThread;
 
         public bool isAvailable = true;
 
@@ -34,12 +34,12 @@ namespace Poker_Server_v1._1
             Session = null;
             isAvailable = false;
         }
-        public short decBalance(int amount)
+        public short decBalance(float amount)
         {
 
             return 0;
         }
-        public short incBalance(int amount)
+        public short incBalance(float amount)
         {
             return 0;
         }

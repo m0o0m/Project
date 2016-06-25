@@ -11,7 +11,7 @@ namespace Poker_Server_v1._1
         public string Username;
         public Client client;
         public int[] Cards;
-        public int Chips;
+        public float Chips;
         public int TimeBank;
         public bool isInGame;
         public bool haveMove;
@@ -29,6 +29,17 @@ namespace Poker_Server_v1._1
             Cards[1] = -1;
             TimeBank = timeBank;
         }
+        /// <summary>
+        /// using this to find client socket 
+        /// because maybe client disconnect and the socket change
+        /// but with this function we can update the socket and have no worry about
+        /// changing socket
+        /// </summary>
+        public Client updateClient()
+        {
+            //have work
+            return this.client;
+        } 
 
     }
 }

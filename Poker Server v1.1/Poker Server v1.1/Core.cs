@@ -27,7 +27,7 @@ namespace Poker_Server_v1._1
             int tableName, tableId, seatsCount, MaxBuyin, MinBuyin, BigBlind;
             int index;
 
-            SqlDataReader reader = Globals.DB.getLHoldemTables();
+            SqlDataReader reader = Globals.DB.getNLHoldemTables();
 
             tableName = reader.GetOrdinal("tableName");
             tableId = reader.GetOrdinal("tableId");
@@ -41,14 +41,14 @@ namespace Poker_Server_v1._1
             {
                 Array.Resize(ref NoLimitedHoldemTables, NoLimitedHoldemTables.Length + 1);
                 index = NoLimitedHoldemTables.Length - 1;
-                NoLimitedHoldemTables[index] = new NoLimitHoldem(reader.GetString(tableId),
-                    reader.GetString(tableName),
+                NoLimitedHoldemTables[index] = new NoLimitHoldem(
+                    reader.GetString(tableId),
+                    Convert.ToString(reader.GetValue(tableName)),
                     reader.GetInt32(seatsCount),
-                    reader.GetInt32(MinBuyin),
-                    reader.GetInt32(MaxBuyin),
-                    reader.GetInt32(BigBlind));                       
+                    (float)reader.GetDouble(MinBuyin),
+                    (float)reader.GetDouble(MaxBuyin),
+                    (float)reader.GetDouble(BigBlind));                      
             }
-
         }
         public void gameLoopStart()
         {
@@ -69,40 +69,41 @@ namespace Poker_Server_v1._1
             if (!started)
             {
                 loadGames();
-
                 started = true;
-                gameLoopStart();
+                gameLoopStart();//run an infinite loop for each table
             }
         }
-        private static void updateData()
-        {
-            // create cash games
-            string TableName, TableID;
-            int SeatsCount, LastId = 0, BigBlind, MaxBuyin, MinBuyin;
-            do
-            {
-                TableName = DB.get("TableName", "CashgameTables", new string[] { "id", ">", LastId.ToString() });
-                if (TableName != "")
-                {
-                    LastId = Int32.Parse(DB.get("id", "CashgameTables", new string[] { "TableName", "=", TableName }));
-                    TableID = DB.get("TableID", "CashgameTables", new string[] { "id", "=", LastId.ToString() });
-                    SeatsCount = Int32.Parse(DB.get("SeatsCount", "CashgameTables", new string[] { "id", "=", LastId.ToString() }));
-                    MaxBuyin = Int32.Parse(DB.get("MaxBuyin", "CashgameTables", new string[] { "id", "=", LastId.ToString() }));
-                    MinBuyin = Int32.Parse(DB.get("MinBuyin", "CashgameTables", new string[] { "id", "=", LastId.ToString() }));
-                    BigBlind = Int32.Parse(DB.get("BigBlind", "CashgameTables", new string[] { "id", "=", LastId.ToString() }));
+        //private static void updateData()
+        //{
+        //    // create cash games
+        //    string TableName, TableID;
+        //    int SeatsCount, LastId = 0, BigBlind, MaxBuyin, MinBuyin;
+        //    do
+        //    {
+                
 
-                    int last = cashTables.Length;
-                    Array.Resize(ref cashTables, last + 1);
-                    cashTables[last] = new CashGameTable(TableID, TableName, SeatsCount, MinBuyin, MaxBuyin, BigBlind);
-                }
-            } while (TableName != "");
+        //        TableName = DB.get("TableName", "CashgameTables", new string[] { "id", ">", LastId.ToString() });
+        //        if (TableName != "")
+        //        {
+        //            LastId = Int32.Parse(DB.get("id", "CashgameTables", new string[] { "TableName", "=", TableName }));
+        //            TableID = DB.get("TableID", "CashgameTables", new string[] { "id", "=", LastId.ToString() });
+        //            SeatsCount = Int32.Parse(DB.get("SeatsCount", "CashgameTables", new string[] { "id", "=", LastId.ToString() }));
+        //            MaxBuyin = Int32.Parse(DB.get("MaxBuyin", "CashgameTables", new string[] { "id", "=", LastId.ToString() }));
+        //            MinBuyin = Int32.Parse(DB.get("MinBuyin", "CashgameTables", new string[] { "id", "=", LastId.ToString() }));
+        //            BigBlind = Int32.Parse(DB.get("BigBlind", "CashgameTables", new string[] { "id", "=", LastId.ToString() }));
 
-            // create tournments
+        //            int last = cashTables.Length;
+        //            Array.Resize(ref cashTables, last + 1);
+        //            cashTables[last] = new CashGameTable(TableID, TableName, SeatsCount, MinBuyin, MaxBuyin, BigBlind);
+        //        }
+        //    } while (TableName != "");
 
-            // create sits and goes
+        //    // create tournments
 
-            // add players to tournoments
-        }
+        //    // create sits and goes
+
+        //    // add players to tournoments
+        //}
 
         /////////////////////////
         // here we write some function to check data and then call function for each table
@@ -111,7 +112,7 @@ namespace Poker_Server_v1._1
         {
             if (!c.isAvailable)
                 return;
-            CashGameTable table = find(tableId);
+            NoLimitHoldem table = find(tableId);
             if (table == null) { c.Kill(); return; }
             //checking inputs
             if (chip > table.maxBuyin || chip < table.minBuyin)
@@ -156,15 +157,15 @@ namespace Poker_Server_v1._1
         }
         public void SitUp(Client c, string tableId, int pos)
         {
-            CashGameTable table = find("tableId");
+            NoLimitHoldem table = find("tableId");
             if (table != null)
             {
                 c.Kill();
                 return;
             }
-            if (table.players[pos].client != c)
+            if (table.playerData[pos].client != c)
             {
-                int addingChip = table.players[pos].Chips;
+                float addingChip = table.playerData[pos].Chips;
                 table.sitUp(pos);
                 c.incBalance(addingChip);
             }
@@ -174,7 +175,7 @@ namespace Poker_Server_v1._1
         }
         public void Bet(Client c, string tableId, int betAmount)
         {
-            CashGameTable table = find(tableId);
+            NoLimitHoldem table = find(tableId);
 
             if (table == null) { c.Kill(); return; }
 
@@ -187,7 +188,7 @@ namespace Poker_Server_v1._1
         }
         public void Fold(Client c, string tableId)
         {
-            CashGameTable table = find(tableId);
+            NoLimitHoldem table = find(tableId);
 
             if (table == null) { c.Kill(); return; }
 
@@ -198,7 +199,7 @@ namespace Poker_Server_v1._1
         }
         public void Check(Client c, string tableId)
         {
-            CashGameTable table = find(tableId);
+            NoLimitHoldem table = find(tableId);
 
             if (table == null) { c.Kill(); return; }
 
@@ -208,7 +209,7 @@ namespace Poker_Server_v1._1
         }
         public void Call(Client c, string tableId)
         {
-            CashGameTable table = find(tableId);
+            NoLimitHoldem table = find(tableId);
 
             if (table == null) { c.Kill(); return; }
 
@@ -220,7 +221,7 @@ namespace Poker_Server_v1._1
         public void reserve(Client c, string tableId, int pos)
         {
             //we should start a timer for 30 second after it we should delete him
-            CashGameTable table = find(tableId);
+            NoLimitHoldem table = find(tableId);
             if (table == null)
                 return;
             if (pos >= table.seatsCount)
@@ -290,7 +291,7 @@ namespace Poker_Server_v1._1
         }
         public void unreserve(Client c, string tableId)
         {
-            CashGameTable table = find(tableId);
+            NoLimitHoldem table = find(tableId);
             if (table == null)
                 return;
             string test = c.reservedTables.Find(delegate (string str) { return str == tableId; });
@@ -308,16 +309,16 @@ namespace Poker_Server_v1._1
         }
         public void addWatcher(Client c, string tableId)
         {
-            CashGameTable table = find(tableId);
+            NoLimitHoldem table = find(tableId);
             if (table == null)
                 return;
             table.addWatcher(c);
         }
-        public cashgame find(string tableId)
+        public NoLimitHoldem find(string tableId)
         {
-            for (int i = 0; i < cashTables.Length; i++)
-                if (cashTables[i].tableId == tableId)
-                    return cashTables[i];
+            foreach (NoLimitHoldem table in NoLimitedHoldemTables)
+                if (table.tableId == tableId)
+                    return table;
             return null;
         }
     }

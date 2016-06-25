@@ -1,10 +1,6 @@
 <?php
 include_once "Home/index.php";
-
 ?>
-
-
-
 <?php die();
 include_once "config.php";
 ?>

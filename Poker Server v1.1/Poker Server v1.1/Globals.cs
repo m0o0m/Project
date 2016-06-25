@@ -12,6 +12,8 @@ namespace Poker_Server_v1._1
         public static Database DB;
 
         public static Core GameCore;
+
+        public static ServerStatus serverStatus;
         public static void addLog(string text, Color color)
         {
             if (txtLogsHandle != null)
