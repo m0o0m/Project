@@ -1,8 +1,9 @@
 <div id="login">
   <div id="box-login">
     <div id="login-head"><a><strong>LOG-IN</strong></a></div>
-    <form  id="main-form-login" method="post" action="login.php">
-      <div  id="login-input-username">
+
+    <div id="main-form-login">
+      <div id="login-input-username">
         <input type="text" name="username" placeholder="Enter username here">
       </div>
       <div id="login-input-password">
@@ -15,9 +16,10 @@
         <input type="text" name="captcha" placeholder="Captcha code">
       </div>
       <div id="login-input-submit">
-        <input type="submit" name="login">
+        <input type="button" name="login">
       </div>
-    </form>
+    </div>
+
   </div>
 </div>
 <style>

@@ -99,7 +99,6 @@ function loadContent(name)
     }
   },1000);
 }
-
 $(document).ready(function(){
     playLoader();
     window.addEventListener("resize",function(){fixer();});
