@@ -1,23 +1,19 @@
 <?php
 class Register
 {
-    public static function run($fname,$lname,$country,$city,$username,$password,$passwordAgain,$email){
-
+    public static function run($country,$username,$password,$passwordAgain,$email){
         if(!Validate::checkNewUsername($username)){
             echo "bad Username";
             return false;
         }
-
         if(!Validate::checkEmail($email)){
             echo "bad Email";
             return false;
         }
-
         if(!Validate::checkPass($password,$passwordAgain)) {
             echo "bad password";
             return false;
         }
-
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         $size = strlen( $chars );
         $str = "";
@@ -31,8 +27,8 @@ class Register
         //add to database
         if(DataBase::getInstance()->set(
             "Users",
-            array("firstname","lastname","country","city","username","password","email","salt"),
-            array($fname,$lname,$country,$city,$username,$password,$email,$salt))){
+            array("country","username","password","email","salt"),
+            array($country,$username,$password,$email,$salt))){
 
             Validate::createValidatorID($username);
             return true;

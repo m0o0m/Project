@@ -347,7 +347,7 @@
             this.txtIpAddress.Name = "txtIpAddress";
             this.txtIpAddress.Size = new System.Drawing.Size(179, 38);
             this.txtIpAddress.TabIndex = 0;
-            this.txtIpAddress.Text = "127.0.0.1";
+            this.txtIpAddress.Text = "192.168.1.87";
             // 
             // txtLogs
             // 

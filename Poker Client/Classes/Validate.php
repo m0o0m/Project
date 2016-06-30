@@ -41,6 +41,7 @@ class Validate
         }
         //checking username
         $len = strlen($username);
+
         if ($len < MIN_USERNAME_LENGTH )
             return false;
         if($len > MAX_USERNAME_LENGTH )
@@ -87,4 +88,3 @@ class Validate
         //mail($emailAddress,$subject,$message);
     }
 }
-

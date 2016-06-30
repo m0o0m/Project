@@ -474,6 +474,7 @@ namespace Poker_Server_v1._1
         ///      2 if the second one is better
         ///     -1 if error accured
         /// </returns>
+
         public static int cmpHands(Hand hand1,Hand hand2)
         {
             if ((int)hand1.handRate > (int)hand2.handRate)
@@ -506,7 +507,7 @@ namespace Poker_Server_v1._1
             return -1;
         }
     }
-    class Hand
+       class Hand
     {
         public Hand()
         {

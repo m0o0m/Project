@@ -100,7 +100,8 @@ namespace Poker_Server_v1._1
                     tempThread.Start();
                 }
                 catch (SocketException)
-                { }
+                {
+                }
             }
         }
         private Client processClient(TcpClient tcpClient)

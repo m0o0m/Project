@@ -16,6 +16,7 @@ namespace Poker_Server_v1._1
         public bool isInGame;
         public bool haveMove;
         public pokerActions lastMove;
+        public int position;
 
         public Hand hand;
 

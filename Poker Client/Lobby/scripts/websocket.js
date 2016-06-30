@@ -8,7 +8,6 @@ function connect()
     UserName = document.getElementById("user_id_store").value;
     var session  = document.getElementById("session_id_store").value;
     conn = new WebSocket("ws://" + IpAddress + ":8080");
-    console.log(conn);
     conn.onmessage = function(e) {
         messageDispatcher(e.data);
     }
@@ -52,8 +51,8 @@ function messageDispatcher(msg)
                         data.ms.tableName,
                         data.ms.tableId,
                         data.ms.seatsCount,
-                        data.ms.MaxBuyin,
-                        data.ms.MinBuyin,
+                        data.ms.maxBuyin,
+                        data.ms.minBuyin,
                         data.ms.BigBlind,
                         data.ms.PlayersCount);
                     break;
@@ -118,6 +117,12 @@ function messageDispatcher(msg)
                     },100);
                     break;
                 }
+                case "error":
+                {
+                  var tableId = data.ms.tableId;
+                  var message = data.ms.message;
+                  showError(tableId,message);
+                }
             }
             break;
         }
@@ -154,6 +159,11 @@ function messageDispatcher(msg)
 
                     break;
                 }
+                case "fold":
+                {
+                  alert("fold");
+                  break;
+                }
                 case "bb":
                 {
 
@@ -173,6 +183,43 @@ function messageDispatcher(msg)
             var tableId = data.ms.tableId;
             switch(dataType)
             {
+                case "seatdata":
+                {
+                  var pos = data.ms.pos;
+                  var tableId = data.ms.tableId;
+
+                  var table = OpenTables.find(tableId);
+                  if(table!= null){
+                    if(data.ms.sitted == "yes")
+                    {
+                      var playerName = data.ms.playerName;
+                      var chip       = data.ms.chip;
+                      var timeBank   = data.ms.timeBank;
+                      var lastMove   = data.ms.lastMove;
+
+                      table.updateSeatData(playerName,chip,lastMove,timeBank,pos);
+                    }
+                    else if(data.ms.sitted == "no")
+                    {
+                      table.SitUpSeat(pos);
+                    }
+                  }
+                }
+                case "tableFirstData":
+                {
+                  var tableId = data.ms.tableId;
+                  var tableName = data.ms.tableName;
+                  var tableSituation = data.ms.tableSituation;
+                  var bigBlind = data.ms.bigBlind;
+                  var tablePot = data.ms.tablePot;
+                  var flopCards = [data.ms.c1,data.ms.c2,data.ms.c3,data.ms.c4,data.ms.c5];
+                  var currentPos = data.ms.currentPos;
+                  var dealerPos = data.ms.dealerPos;
+                  var seatsCount = data.ms.seatsCount;
+
+                  var table = OpenTables.addTable(tableName,tableId,tableSituation,bigBlind,tablePot,flopCards,currentPos,dealerPos,seatsCount);
+                  table.show();
+                }
                 case "initnewgame":
                 {
                     var tableId = data.ms.tableId;
@@ -208,19 +255,22 @@ function messageDispatcher(msg)
                 }
                 case "timeExist":
                 {
-                    break;
+                  var tableId = data.ms.tableId;
+                  var time = data.ms.t;
+                  var pos = data.ms.pos;
+                  updatePlayerTime(tableId,time,pos);
+                  break;
                 }
                 case "timeBank":
                 {
-                    break;
+
+                  break;
                 }
                 case "turnPos":
                 {
 
-                    break;
+                  break;
                 }
-
-
             }
 
         }
@@ -228,10 +278,7 @@ function messageDispatcher(msg)
     }
 }
 
-
-
-
-
-
-
-
+function sendOpenTableRequest(tableId)
+{
+  conn.send("t=opt;"+tableId+";");
+}

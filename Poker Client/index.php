@@ -1,8 +1,6 @@
 <?php
+session_start();
+if(isset($_SESSION["user_id"]))
+  header("Location: http://192.168.1.87/lobby");
 include_once "Home/index.php";
-?>
-<?php die();
-include_once "config.php";
-?>
-<a href="login.php"><div id="login-btn">Login</div></a>
-<a href="register.php"><div id="register-btn">Register</div></a>
+die();

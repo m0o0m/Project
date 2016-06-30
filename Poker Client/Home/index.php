@@ -15,6 +15,7 @@ include_once "config.php";
     <script src="home/scripts/globals.js"></script>
     <script src="home/scripts/jquery-1.12.2.min.js"></script>
     <script src="home/scripts/loader.js"></script>
+    <script src="home/scripts/login.js"></script>
 </head>
 <body>
 <div id="main">

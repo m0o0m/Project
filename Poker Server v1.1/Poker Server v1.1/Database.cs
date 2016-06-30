@@ -12,7 +12,6 @@ namespace Poker_Server_v1._1
         private SqlConnection connection;
         private string connectionString;
        
-
         public Database()
         {
             connectionString = "Server=DESKTOP-1L1I0GO;Database=GoldenDB;Trusted_Connection=True;MultipleActiveResultSets=True;";
@@ -28,12 +27,12 @@ namespace Poker_Server_v1._1
                     "CREATE TABLE Users" +
                     "(" +
                     "ID INT                     NOT NULL IDENTITY(1,1)," +
-                    "FIRSTNAME VARCHAR (30)     NOT NULL," +
-                    "LASTNAME VARCHAR (30)      NOT NULL," +
+                    "FIRSTNAME VARCHAR (30)             ," +
+                    "LASTNAME VARCHAR (30)              ," +
                     "USERNAME VARCHAR (20)      NOT NULL," +
                     "PASSWORD VARCHAR (64)      NOT NULL," +
                     "EMAIL VARCHAR(128)         NOT NULL," +
-                    "COUNTRY VARCHAR(40)                ," +
+                    "COUNTRY VARCHAR(40)        NOT NULL," +
                     "CITY VARCHAR(40)                   ," +
                     "SALT VARCHAR (32)          NOT NULL," +
                     "SESSIONID VARCHAR (64)         NULL," +
@@ -65,7 +64,6 @@ namespace Poker_Server_v1._1
             }
             return true;
         }
-
         public bool addTable(string tableId, string tableName,string tableType,string maxBuyin,string minBuyin,string BigBlindStake,int seatsCount)
         {
             string Query = "SELECT tableId FROM CashgameTables WHERE tableId = '" + tableId + "';";
@@ -84,7 +82,6 @@ namespace Poker_Server_v1._1
 
             return true;
         }
-
         public SqlDataReader getNLHoldemTables()
         {
             string Query = "SELECT * FROM CashgameTables WHERE tableType = 'HNL';";
@@ -123,10 +120,14 @@ namespace Poker_Server_v1._1
         }
         public string getUserSession(string username)
         {
-            string Query = "SELECT sessionKey FROM users WHERE username =" + "'"+username+"'";
-            SqlCommand command = new SqlCommand(Query,connection);
+            string Query = "SELECT sessionId FROM users WHERE username =" + "'" + username + "'";
+            SqlCommand command = new SqlCommand(Query, connection);
             SqlDataReader reader = command.ExecuteReader();
-            return reader.GetString(reader.GetOrdinal("sessionKey"));
+            if (reader.Read())
+            {
+                return reader.GetString(reader.GetOrdinal("sessionId"));
+            }
+            return null;
         }
     }
 }

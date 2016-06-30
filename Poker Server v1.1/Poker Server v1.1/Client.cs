@@ -45,13 +45,15 @@ namespace Poker_Server_v1._1
         }
         public void Start()
         {
-            //GameCore.sendPublicData(this);
+            //send public data
+            Globals.GameCore.sendPublicData(this);
             //GameCore.sendDataOf(this);
-            //run meesage litener
+            //
             ClientThread = new Thread(new ThreadStart(delegate() {
                 MessageListener listener = new MessageListener(this);
                 listener.Run();
             }));
+            ClientThread.Start();
         }
         public void send(string[] dataIndexes, string[] data)
         {
@@ -78,7 +80,6 @@ namespace Poker_Server_v1._1
                 this.Kill();
             }
         }
-
         //
         //static methods below
         //

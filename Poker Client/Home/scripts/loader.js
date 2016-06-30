@@ -76,7 +76,6 @@ function fixer()
   $("#viewer-box-back").css("top",$(".viewer-box").offsetTop + "px");
   $("#viewer-box-back").css("left",$(".viewer-box").offset().left + "px");
 }
-
 function loadContent(name)
 {
   setTimeout(function(){

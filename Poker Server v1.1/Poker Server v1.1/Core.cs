@@ -16,7 +16,7 @@ namespace Poker_Server_v1._1
         private static LimitedOmaha[] LimitedOmahaTables;
 
         private static bool started;
-
+        
         public Core()
         {
             started = false;
@@ -118,32 +118,64 @@ namespace Poker_Server_v1._1
             if (chip > table.maxBuyin || chip < table.minBuyin)
             {
                 c.send(
-                new string[] { "type", "msgtype", "message" },
-                new string[] { "srvmsg", "badinput", "Please buy chips between Minimum buyin and Maximum buyin. " }
+                new string[] { "type", "msgtype",  "tableId", "message" },
+                new string[] { "srvmsg", "error", table.tableId ,"Please buy chips between Minimum buyin and Maximum buyin. " }
                 );
+                table.TableRelease(
+                    new string[] { "type", "msgtype", "tableId", "pos" },
+                    new string[] { "srvmsg", "ursv", table.tableId, pos.ToString() }
+                    );
+                c.send(
+                    new string[] { "type", "msgtype", "tableId", "pos" },
+                    new string[] { "srvmsg", "unrsv", table.tableId, pos.ToString() }
+                    );
                 return;
             }
             if (!table.isVacant(pos))
             {
                 c.send(
-                new string[] { "type", "msgtype", "message" },
-                new string[] { "srvmsg", "error", "Sorry.. Can not sit down here" }
+                new string[] { "type", "msgtype", "tableId" , "message" },
+                new string[] { "srvmsg", "error", table.tableId,"Sorry.. Can not sit down here" }
                 );
+                table.TableRelease(
+                    new string[] { "type", "msgtype", "tableId", "pos" },
+                    new string[] { "srvmsg", "ursv", table.tableId, pos.ToString() }
+                    );
+                c.send(
+                    new string[] { "type", "msgtype", "tableId", "pos" },
+                    new string[] { "srvmsg", "unrsv", table.tableId, pos.ToString() }
+                    );
                 return;
             }
             if (c.decBalance(chip) == -1)
             {
                 c.send(
-                new string[] { "type", "msgtype", "message" },
-                new string[] { "srvmsg", "error", "Sorry.. You don't have enought balance to sit on table.\n Please deposit and try again." }
+                new string[] { "type", "msgtype", "tableId" ,"message" },
+                new string[] { "srvmsg", "error", table.tableId,"Sorry.. You don't have enought balance to sit on table.\n Please deposit and try again." }
                 );
+                table.TableRelease(
+                    new string[] { "type", "msgtype", "tableId", "pos" },
+                    new string[] { "srvmsg", "ursv", table.tableId, pos.ToString() }
+                    );
+                c.send(
+                    new string[] { "type", "msgtype", "tableId", "pos" },
+                    new string[] { "srvmsg", "unrsv", table.tableId, pos.ToString() }
+                    );
                 return;
             }
             if (c.sittedTables.Find(delegate (string str) { return str == tableId; }) != null)
             {
                 c.send(
-                    new string[] { "type", "msgtype", "message" },
-                    new string[] { "srvmsg", "error", "Sorry.. You already siited down on this table" }
+                    new string[] { "type", "msgtype", "tableId" ,"message" },
+                    new string[] { "srvmsg", "error", table.tableId,"Sorry.. You already sited down on this table" }
+                    );
+                table.TableRelease(
+                    new string[] { "type", "msgtype", "tableId", "pos" },
+                    new string[] { "srvmsg", "ursv", table.tableId, pos.ToString() }
+                    );
+                c.send(
+                    new string[] { "type", "msgtype", "tableId", "pos" },
+                    new string[] { "srvmsg", "unrsv", table.tableId, pos.ToString() }
                     );
                 return;
             }
@@ -310,9 +342,8 @@ namespace Poker_Server_v1._1
         public void addWatcher(Client c, string tableId)
         {
             NoLimitHoldem table = find(tableId);
-            if (table == null)
-                return;
-            table.addWatcher(c);
+            if (table != null)
+                table.addWatcher(c);
         }
         public NoLimitHoldem find(string tableId)
         {
@@ -321,5 +352,29 @@ namespace Poker_Server_v1._1
                     return table;
             return null;
         }
+
+        /// <summary>
+        /// function send all data of the tables
+        /// and data that all users should know
+        /// </summary>
+        /// <param name="c">The client that recieve the data</param>
+        public void sendPublicData(Client c)
+        {
+            foreach (NoLimitHoldem table in NoLimitedHoldemTables)
+            {
+                c.send(new string[] {"type","msgtype",    "tableName","tableId"        , "seatsCount",             "maxBuyin",             "minBuyin" ,                 "BigBlind"  ,"PlayersCount"     }, 
+                       new string[] {"srvmsg","tableinfo",table.tableName,table.tableId,table.seatsCount.ToString(),table.maxBuyin.ToString(),table.minBuyin.ToString(), table.bigBlind.ToString() ,table.PlayersCount().ToString() }
+                    );
+            }
+        }
+
+        public void sendTableData(Client c,string tableId)
+        {
+            NoLimitHoldem table = find(tableId);
+            if (table != null)
+                table.sendTableData(c);
+        }
     }
 }
+
+

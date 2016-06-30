@@ -85,7 +85,7 @@ function addTable(tableName,tableId,seatsCount,MaxBuyin,MinBuyin,BigBlind,Player
     var OpenButton = document.createElement("div");
     OpenButton.setAttribute("class","Button");
     OpenButton.setAttribute("id","Open-"+tableId);
-    OpenButton.addEventListener("click", function() {CreateTable(tableName,tableId,BigBlind,seatsCount)} );
+    OpenButton.addEventListener("click", function() {sendOpenTableRequest(tableId);} );
     TableHandleDetails.appendChild(OpenButton);
 
     var DetailsBox = document.createElement("div");
@@ -117,12 +117,10 @@ function addTable(tableName,tableId,seatsCount,MaxBuyin,MinBuyin,BigBlind,Player
     container.appendChild(tableHandle);
     container.appendChild(TableHandleDetails);
 }
-
 function SortDetials(tableId,By)
 {
 
 }
-
 function SetupViewHandlers()
 {
     $("#profile-viewer").show();

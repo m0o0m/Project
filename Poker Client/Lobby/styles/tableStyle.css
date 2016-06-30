@@ -15,7 +15,6 @@
     background-image: url("images/pattrn-blue.jpg");
     text-align: center;
     position: relative;
-
 }
 .tableHeader:hover
 {
@@ -67,6 +66,28 @@
     opacity: 0.6;
     font-size: 80%;
 }
+.seat-registered
+{
+  width : 10%;
+  height: 6%;
+  position: absolute;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: black;
+  box-shadow: 1px 1px 20px 1px pink;
+  color: white;
+  text-align: center;
+}
+.seat-registered a
+{
+    text-align: center;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left : 50%;
+    opacity: 0.6;
+    font-size: 80%;
+}
 .seat0
 {
     top : 12%;
@@ -106,7 +127,6 @@
     bottom: 0;
     right:  0;
 }
-
 .reserve-box {
     position: absolute;
     width: 60%;
@@ -119,7 +139,6 @@
     overflow: hidden;
     text-align: center;
 }
-
 .rsvBox-header
 {
     width: 100%;
@@ -178,64 +197,72 @@
 
 .seat-have-player
 {
-    position: absolute;
-    width: 14%;
-    height: 13%;
-    border-radius: 6px;
-    font-size: 80%;
+  position: absolute;
+  width: 11%;
+  height: 25%;
+  border-radius: 6px;
+  font-size: 80%;
 }
 .seat-have-player .seatHeader
 {
-    width: 50%;
-    height: 27%;
-    background-color: black;
-    text-align: center;
-    color: white;
-    border-radius: 6px 6px 0 0;
+  width: 100%;
+  height: 16%;
+  background-color: black;
+  text-align: center;
+  color: white;
+  border-radius: 6px 6px 0 0;
+  position: relative;
 }
-.seat-have-player .seatTimer
+.seat-have-player .seatHeader a ,.playerChip a, .seatSituation a
 {
-    background-color: red;
-    position: absolute;
-    opacity: 0.5;
-    height: 100%;
-    bottom: 0;
-    width: 50%;
-    border-radius: 6px 6px 0 0;
-    transition: height 20s;
+  position: absolute;
+  width: 100%;
+  top : 50%;
+  left: 0;
+  text-align: center;
+  transform: translateY(-50%);
+}
+.seat-have-player .seatSituation
+{
+  background-color: silver;
+  position: relative;
+  height: 15%;
+  width: 100%;
 }
 .seat-have-player .seatImage
 {
-    width: 50%;
-    height: 70%;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+  width: 100%;
+  height: 55%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 .cardHolder
 {
-    width: 50%;
-    height: 101%;
-    position: absolute;
-    top: 0;
-    position: absolute;
-    right: 0;
+  width: 100%;
+  height: 70%;
+  position: absolute;
+  top: 8%;
+  left: 0;
 }
 .card
 {
-    width: 45%;
-    height: 70%;
-    background-size: contain;
-    position: absolute;
-    bottom: 0;
+  width: 60%;
+  height: 100%;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  bottom: 0;
+  position: absolute;
 }
 .card:first-child
 {
     left: 0;
+    transform: rotateZ(-15deg);
 }
 .card:last-child
 {
     right: 0;
+    transform: rotateZ(15deg);
 }
 .control-box
 {
@@ -259,14 +286,15 @@
 }
 .playerChip
 {
-    width: 50%;
-    height: 27%;
-    background-color: black;
-    font-size: 120%;
-    color: white !important;
-    text-shadow: 0 0 20px white;
-    text-align: center;
-    border-radius: 0 0 6px 6px;
+      width: 100%;
+      height: 15%;
+      background-color: black;
+      font-size: 120%;
+      color: white !important;
+      text-shadow: 0 0 20px white;
+      text-align: center;
+      border-radius: 0 0 6px 6px;
+      position: relative;
 }
 .dealerBtn
 {

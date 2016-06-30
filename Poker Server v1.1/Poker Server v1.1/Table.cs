@@ -202,7 +202,10 @@ namespace Poker_Server_v1._1
                     if (Watchers[i] == null)
                         index = i;
                 if (index != -1)
+                {
                     Watchers[index] = c;
+
+                }
                 else
                     c.Kill();
             }
@@ -224,6 +227,73 @@ namespace Poker_Server_v1._1
             for (int i = 0; i < watchersCount; i++)
                 if (Watchers[i] != null)
                     Watchers[i].send(indexes, data);
+        }
+        public void sendTableData(Client c)
+        {
+            c.send(
+                new string[] { "type", "dataType" ,"tableName", "tableId", "tableSituation",                      "bigBlind",       "tablePot",
+                                    "c1",
+                                    "c2",
+                                    "c3",
+                                    "c4",
+                                    "c5",
+                                    "currentPos", "dealerPos","seatsCount"},
+                new string[] { "tableData", "tableFirstData", tableName  , tableId   , tableData.tableSituation.ToString() , bigBlind.ToString(), tableData.pot.ToString(),
+                                    tableData.FlopCards[0].ToString(),
+                                    tableData.FlopCards[1].ToString(),
+                                    tableData.FlopCards[2].ToString(),
+                                    tableData.FlopCards[3].ToString(),
+                                    tableData.FlopCards[4].ToString(),
+                                    tableData.currentPos.ToString(),tableData.dealerPos.ToString(),seatsCount.ToString()}
+                );
+            for(int i = 0; i < seatsCount; i++)
+            {
+                string[] indexes, data;
+                if (playerData[i] != null)
+                {
+                    indexes = new string[] { "type", "dataType" ,"tableId" , "sitted" , "playerName", "chip", "timeBank" , "lastBet" ,"lastMove" };
+                    data    = new string[] { "tableData","seatData", tableId  , "yes" , i.ToString() , playerData[i].Chips.ToString(), playerData[i].TimeBank.ToString() , 0.ToString()};
+                    Array.Resize(ref data, data.Length + 1);
+                    if (tableData.currentPos != i)
+                    {
+                        if (playerData[i].haveMove)
+                            data[data.Length - 1] = "wait";
+                        else
+                        {
+                            switch (playerData[i].lastMove)
+                            {
+                                case pokerActions.Fold:
+                                    data[data.Length - 1] = "fold";
+                                    break;
+                                case pokerActions.Check:
+                                    data[data.Length - 1] = "check";
+                                    break;
+                                case pokerActions.Call:
+                                    data[data.Length - 1] = "call";
+                                    break;
+                                case pokerActions.Bet:
+                                    data[data.Length - 1] = "bet";
+                                    break;
+                                default:
+                                    data[data.Length - 1] = "wait";
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                        data[data.Length - 1] = "wait";
+                }
+                else
+                {
+                    indexes = new string[] { "msgtype", "dataType","tableId", "sitted","pos"};
+                    data = new string[] { "tableData", "seatData", tableId,"no", i.ToString()};
+                }
+                c.send(indexes, data);
+                c.send(
+                    new string[] { "msgtype", "dataType", "tableId", "flag" },
+                    new string[] { "tableData", "flag", tableId, "ready" }
+                );
+            }
         }
         public void sitUp(int pos)
         {

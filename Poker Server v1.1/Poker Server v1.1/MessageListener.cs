@@ -12,37 +12,7 @@ namespace Poker_Server_v1._1
         string Message;
         int Length;
         byte[] buffer;
-        public MessageListener(Client Client)
-        {
-            buffer = new byte[1024];
-            Stream = client.ClientSocket.GetStream();
-        }
-        public void Run()
-        {
-            try
-            {
-                while (client.ClientSocket.Connected)
-                {
-                    Thread.Sleep(100);
-                    Array.Resize(ref buffer, 1024);
-                    Length = Stream.Read(buffer, 0, 1024);
 
-                    Array.Resize(ref buffer, Length);
-                    if (Messages.decode(buffer, out Message))
-                        onMessage(client, Message);
-                    else // client sended a bad data
-                    {
-                        Globals.addLog("Client ("+ client.Username +") with ip "+ Client.getIpByTcpClient(client.ClientSocket) + "send a bad data ",Color.Red);
-                        client.Kill();
-                        break;
-                    }
-                }
-            }
-            catch (ObjectDisposedException)
-            {
-                Globals.addLog("Client (" + client.Username + ") Disconnect... ", Color.Black);
-            }
-        }
         public void onMessage(Client client, string msg)
         {
             int index = 0;
@@ -70,7 +40,7 @@ namespace Poker_Server_v1._1
             string[] tmp;
             switch (temp)
             {
-                
+
                 case "get"://it is a request to get data
                     Globals.DB.getUserSession("adasd");
                     break;
@@ -132,6 +102,7 @@ namespace Poker_Server_v1._1
                            //we should add him to watchers
                     tmp = msg.Split(new string[] { ";" }, 3, StringSplitOptions.RemoveEmptyEntries);
                     if (tmp.Length != 2) { client.Kill(); return; }
+                    Globals.GameCore.sendTableData(client,tmp[1]);
                     Globals.GameCore.addWatcher(client, tmp[1]);//tmp[1] is table id
                     break;
                 case "clst"://client close an opened table
@@ -147,7 +118,40 @@ namespace Poker_Server_v1._1
                     client.Kill();
                     return;
             }
-
         }
+
+        public MessageListener(Client client)
+        {
+            buffer = new byte[1024];
+            this.client = client;
+            Stream = this.client.ClientSocket.GetStream();
+        }
+        public void Run()
+        {
+            try
+            {
+                while (client.ClientSocket.Connected)
+                {
+                    Thread.Sleep(100);
+                    Array.Resize(ref buffer, 1024);
+                    Length = Stream.Read(buffer, 0, 1024);
+
+                    Array.Resize(ref buffer, Length);
+                    if (Messages.decode(buffer, out Message))
+                        onMessage(client, Message);
+                    else // client sended a bad data
+                    {
+                        Globals.addLog("Client ("+ client.Username +") with ip "+ Client.getIpByTcpClient(client.ClientSocket) + " send a bad data ",Color.Red);
+                        client.Kill();
+                        break;
+                    }
+                }
+            }
+            catch (ObjectDisposedException)
+            {
+                Globals.addLog("Client (" + client.Username + ") Disconnect... ", Color.Black);
+            }
+        }
+        
     }
 }

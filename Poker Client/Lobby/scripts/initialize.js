@@ -1,12 +1,12 @@
 /**
  * Created by mmdamin on 4/15/2016.
  */
-var IpAddress = "127.0.0.1";
-var url = "http://127.0.0.1/golden/";
+var IpAddress = "192.168.1.87";
+var url = "http://192.168.1.87/";
 var conn = null;
 var connected = false;
-var OpenTables;
 var UserName;
+var OpenTables;
 
 $(document).ready(function(){
     connect();
@@ -14,4 +14,5 @@ $(document).ready(function(){
     $(window).resize(function(){fixStyle();});
     loading();
     LoadProfileImage();
+    OpenTables = new TableStorage();
 });

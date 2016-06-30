@@ -4,7 +4,7 @@ define("SERVER_NAME","DESKTOP-1L1I0GO");
 define("DATABASE_NAME","GoldenDB");
 
 $GLOBALS["session_id"] = "";
-$GLOBALS["serverIp"] = "127.0.0.1";
+$GLOBALS["serverIp"] = "192.168.1.87";
 $GLOBALS["home_url"]   = "http://".$GLOBALS["serverIp"];
 $GLOBALS["game_url"]   = $GLOBALS["home_url"]."/Lobby";
 $GLOBALS["lobby_title"] = "Lobby";
@@ -17,5 +17,4 @@ function autoload($class)
 {
     include_once "Classes\\".$class.".php";
 }
-
 spl_autoload_register("autoload");
